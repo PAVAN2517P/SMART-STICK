@@ -2,32 +2,45 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const server = http.createServer(app);
 
-// 1. Setup WebSocket on the same server
+// 1. Setup WebSocket Integration
 const wss = new WebSocket.Server({ server });
 
-// 2. Serve your Dashboard files from the 'public' folder
-// Serve static files
-app.use(express.static(__dirname));
+// 2. Fallback Path Engine to run flawlessly both locally and on Render
+const rootPath = 
+  path.join(__dirname, '..');
 
-// FORCE THE DASHBOARD TO LOAD
+
+const publicPath = 
+  fs.existsSync(
+    path.join(__dirname, '../public'))
+  ? path.join(__dirname, '../public')
+  : path.join(__dirname, '..');
+
+app.use(express.static(publicPath));
+
+// Explicit fallback endpoint route
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    if (fs.existsSync(path.join(publicPath, 'index.html'))) {
+        res.sendFile(path.join(publicPath, 'index.html'));
+    } else {
+        res.sendFile(path.join(rootPath, 'index.html'));
+    }
 });
 
-// 3. WebSocket Connection Logic
+// 3. Multi-Client Socket Broadcast Logic (Phone-to-Phone communication)
 wss.on('connection', (ws) => {
-    console.log('New client connected (Stick or Dashboard)');
+    console.log('📱 New Device Connected to Dashboard Network');
 
     ws.on('message', (message) => {
-        // This is where the stick sends data (e.g., "OBSTACLE_DETECTED")
-        const data = message.toString();
-        console.log(`Received from stick: ${data}`);
+        const data = message.toString().trim();
+        console.log(`📥 Received Stream Data: ${data}`);
 
-        // Send this message to the Dashboard (Phone)
+        // Broadcast to every connected phone/device instantly
         wss.clients.forEach((client) => {
             if (client !== ws && client.readyState === WebSocket.OPEN) {
                 client.send(data);
@@ -36,15 +49,15 @@ wss.on('connection', (ws) => {
     });
 
     ws.on('close', () => {
-        console.log('Client disconnected');
+        console.log('❌ Device disconnected from network');
     });
 });
 
-// 4. Start the server on Port 3000
-const PORT = 3000;
+// 4. Start Server Instance
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
-    console.log(`-----------------------------------------------`);
-    console.log(`🚀 SERVER ACTIVE: http://localhost:${PORT}`);
-    console.log(`📡 FOR PHONE ACCESS: Use your IP address at port 3000`);
-    console.log(`-----------------------------------------------`);
+    console.log(`===============================================`);
+    console.log(`🚀 LIVE NETWORK RUNNING`);
+    console.log(`💻 Local Workstation Link: http://localhost:${PORT}`);
+    console.log(`===============================================`);
 });
