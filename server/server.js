@@ -10,7 +10,7 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 // 2. Serve your Dashboard files from the 'public' folder
-app.use(express.static(path.join(__dirname, '.')));
+app.use(express.static(path.join(__dirname));
 
 // 3. WebSocket Connection Logic
 wss.on('connection', (ws) => {
