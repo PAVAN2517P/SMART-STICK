@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "name": "Primary Caregiver",
+    "phone": "+919876543210",
+    "email": "caregiver1@example.com",
+    "isEmergencyContact": true
+  }
+]
