@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <!-- Dark Background Minimalist Circle -->
+  <circle cx="50" cy="50" r="48" fill="#1E1E1E" stroke="#333333" stroke-width="2"/>
+  
+  <!-- Sonar / Radar Waves (Representing the Ultrasonic Sensors) -->
+  <path d="M30 35 A 25 25 0 0 1 70 35" fill="none" stroke="#007AFF" stroke-width="4" stroke-linecap="round"/>
+  <path d="M38 43 A 15 15 0 0 1 62 43" fill="none" stroke="#007AFF" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- The Core Navigation Pin / Beacon -->
+  <circle cx="50" cy="55" r="6" fill="#FF3B30"/>
+  
+  <!-- Safe Path Lines -->
+  <path d="M50 65 L50 85" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+  <path d="M40 85 L60 85" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+</svg>
